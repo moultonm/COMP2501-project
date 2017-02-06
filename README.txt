@@ -12,3 +12,9 @@ FILES:
 main.cpp
 Game.h
 Game.cpp
+Model.cpp
+Model.h
+View.h
+View.cpp
+Control.h
+Control.cpp
