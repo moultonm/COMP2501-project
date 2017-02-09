@@ -2,19 +2,28 @@ GOOBY'S SPACE ADVENTURE
 
 Authors:
 Alexandra Wilson (100998162)
-Matthew Moulton (101010 something)
+Matthew Moulton (101010631)
 
 DEPENDENCIES:
-- standard sfml setup, but MAKE SURE you include "sfml-audio.lib" and 
+- standard sfml setup, but MAKE SURE you include "sfml-audio.lib" and
   "sfml-audio-d.lib" now so you don't run into issues with music later!!!!
 
-FILES:
+Source Files:
 main.cpp
-Game.h
 Game.cpp
 Model.cpp
+View.cpp
+Control.cpp
+Manager.cpp
+Player.cpp
+
+Header Files:
+Game.h
 Model.h
 View.h
-View.cpp
 Control.h
-Control.cpp
+Manager.h
+Player.h
+Renderable.h
+Updateable.h
+defs.h
