@@ -2,32 +2,41 @@ GOOBY'S SPACE ADVENTURE
 
 Authors:
 Alexandra Wilson (100998162)
-Matthew Moulton (101010631)
+Matthew Moulton (101010 something)
 
 DEPENDENCIES:
-- standard sfml setup, but MAKE SURE you include "sfml-audio.lib" and
+- standard sfml setup, but MAKE SURE you include "sfml-audio.lib" and 
   "sfml-audio-d.lib" now so you don't run into issues with music later!!!!
-  
-Notes:
-- The project directory I zipped and uploaded can be individually downloaded from github if you click on it. It assumes you have your SFML folder saved at "C:\SFML-2.4.1"
-- If you already have your own project created, just plop the source code files in there, and put the stuff from "Assets" in a directory called "Assets" in the same directory as your source code (it looks for the textures at that spot)
 
-Source Files:
-main.cpp
-Game.cpp
-Model.cpp
-View.cpp
+-- Latest Updates:
+	- added in crafting and items, and currently working on implementing the menu itself and adding more items and working on the UI for the crafting menu.
+
+Goals Right Now (for Alex):
+Monday/Tuesday: Crafting
+Wednesday: Level Menu
+Thursday/Friday: Actual game play and level building for regular levels
+Friday/Saturday: Boss level/game play
+
+For saturday we need proof of concept, so it doesn't have to be 100% fancy but we'll do as much as we can, of course
+
+FILES:
 Control.cpp
-Manager.cpp
-Player.cpp
-
-Header Files:
-Game.h
-Model.h
-View.h
 Control.h
+Crafting.cpp
+Crafting.h
+defs.h
+Game.h
+Game.cpp
+Item.cpp
+Item.h
+main.cpp
+Manager.cpp
 Manager.h
+Model.cpp
+Model.h
+Player.cpp
 Player.h
 Renderable.h
 Updateable.h
-defs.h
+View.cpp
+View.h
