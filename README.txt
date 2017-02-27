@@ -2,7 +2,7 @@ GOOBY'S SPACE ADVENTURE
 
 Authors:
 Alexandra Wilson (100998162)
-Matthew Moulton (101010 something)
+Matthew Moulton (101010631)
 
 DEPENDENCIES:
 - standard sfml setup, but MAKE SURE you include "sfml-audio.lib" and 
