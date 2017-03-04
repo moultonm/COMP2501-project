@@ -4,6 +4,12 @@ Authors:
 Alexandra Wilson (100998162)
 Matthew Moulton (101010631)
 
+CONTROLS:
+- From Title Screen: Space to start game
+- From Level Select: W/S to change selection, Enter to choose selection
+- From Crafting Screen: W/S to change selection, Enter to choose selection
+- Gameplay: A/D to move left and right, W to jump
+
 DEPENDENCIES:
 - standard sfml setup, but MAKE SURE you include "sfml-audio.lib" and
   "sfml-audio-d.lib" now so you don't run into issues with music later!!!!
