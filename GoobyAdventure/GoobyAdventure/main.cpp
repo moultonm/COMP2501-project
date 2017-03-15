@@ -12,7 +12,3 @@ int main() {
 
 	return 0;
 }
-
-
-//might want to try setting origin of sprites to their center if we want circle collision (or easier to just move the center in the collision code?)
-//i might not have to change the way things are drawn if i just set everythings origin.. they all get bumped a bit up-left but that might be ok

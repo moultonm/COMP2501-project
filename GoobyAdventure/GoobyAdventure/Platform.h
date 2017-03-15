@@ -1,12 +1,14 @@
 #pragma once
 #include "Renderable.h"
+#include <SFML/Graphics.hpp>
 
 class Platform : public Renderable {
 public:
-	Platform(int, int, int, int); //x, y, width, height
+	Platform(int, int, int); //x, y, width
 	~Platform();
 
-	sf::RectangleShape plat; //platforms are just shapes for now
+	sf::VertexArray plat; //platforms are just shapes for now
+	sf::Texture* texture;
 	int x;
 	int y;
 	int width;

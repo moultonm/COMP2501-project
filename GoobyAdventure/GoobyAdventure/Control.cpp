@@ -3,22 +3,12 @@
 Control::Control(Model* m, View* v) {
 	model = m;
 	view = v;
+	counter = 0;
 }
 
 Control::~Control() {
 
 }
-/*	while (view->window.pollEvent(event)) {   bullet firing stuff!!!
-		switch (event.type) {
-		case sf::Event::Closed:
-			view->window.close();
-			break;
-		} //Spacebar to fire bullets
-		if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Space) {
-			if (*gameState == 0) model->player->fireBullet();
-		}
-	}*/
-
 
 void Control::inputs() {
 	sf::Event event;
@@ -113,6 +103,10 @@ void Control::inputs() {
 			}
 			break;
 		}
+		//Spacebar to fire bullets
+		if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Space) {
+			if (*gameState == GAME) model->player->fireBullet();
+		}
 	}
 
 	if (*gameState != GAME) {
@@ -121,13 +115,20 @@ void Control::inputs() {
 
 	//reset velocity if no inputs are given
 	model->player->velocity.x = 0;
-
+	model->player->isMoving = false;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 		model->player->velocity.x = -model->player->speed;
+		model->player->facing = 2;
+		model->player->isMoving = true;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 		model->player->velocity.x = +model->player->speed;
+		model->player->facing = 0;
+		model->player->isMoving = true;
 	}
+
+
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
 		if (!model->player->isJumping) { //if hes not already jumping
 			model->player->isJumping = true; //set him to jumping

@@ -7,25 +7,31 @@ View::View(Model* m) {
 	height = 700;
 
 	hud = new HUD();
-	model->player->sprite.setTexture(imageManager.get_texture("Assets/tempPlayer.bmp", sf::Color(106, 76, 48)), true);
+	model->player->sprite.setTexture(imageManager.get_texture("Assets/p1_spritesheet.png"));
+	model->player->sprite.setTextureRect(sf::IntRect(67, 196, 66, 92));
 
 	//initialize our window
 	window.create(sf::VideoMode(width, height), "COMP2501-Gooby_Space_Adventure");
 	window.setFramerateLimit(45);
 
 	//initializes title text for now
-	font.loadFromFile("Assets/arial.ttf");
+	font.loadFromFile("Assets/Escalope_Crust-One.ttf");
 	text.setFont(font);
 	text.setFillColor(sf::Color::Magenta);
-	text.setCharacterSize(28);
+	text.setCharacterSize(65);
 	text.setPosition(width / 4, height / 4);
 	text.setString("Gooby's Space Adventure\n\n        (Press Space)");
 
 	//background is just the same image repeated twice and it loops forever rightwards
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i < 2; i++) { //GRASSY BACKGROUND
 		backgroundSprites.push_back(sf::Sprite());
 		backgroundSprites.back().setTexture(imageManager.get_texture("Assets/backgroundSmall.png"), true);
 		backgroundSprites.back().setPosition((1024 * i) - (CENTER_SCREEN % 1024), 0);
+	}
+	for (int i = 0; i < 2; i++) { //THIS IS THE UPPER BACKGROUND
+		backgroundSprites.push_back(sf::Sprite());
+		backgroundSprites.back().setTexture(imageManager.get_texture("Assets/starfield.png"), true);
+		backgroundSprites.back().setPosition((1024 * i) - (CENTER_SCREEN % 1024), -700);
 	}
 }
 
@@ -55,34 +61,74 @@ void View::render() {
 
 	/*-----draw the background-----*/
 	if (model->player->centered) { //only scroll the background when player is center-screen
-		backgroundSprites[0].setPosition(0 - ((int)model->player->position.x % 1024), 0); //modular position loops the background
-		backgroundSprites[1].setPosition(1024 - ((int)model->player->position.x % 1024), 0);
+		backgroundSprites[0].setPosition(0 - ((int)model->player->position.x % width), 0); //modular position loops the background
+		backgroundSprites[1].setPosition(1024 - ((int)model->player->position.x % width), 0);
+		backgroundSprites[2].setPosition(0 - ((int)model->player->position.x % width), -height);
+		backgroundSprites[3].setPosition(1024 - ((int)model->player->position.x % width), -height);
+	}
+	if (model->player->position.y < height / 2) {
+		backgroundSprites[0].setPosition(backgroundSprites[0].getPosition().x, height / 2 - model->player->position.y);
+		backgroundSprites[1].setPosition(backgroundSprites[1].getPosition().x, height / 2 - model->player->position.y);
+		backgroundSprites[2].setPosition(backgroundSprites[2].getPosition().x, -height + height / 2 - model->player->position.y);
+		backgroundSprites[3].setPosition(backgroundSprites[3].getPosition().x, -height + height / 2 - model->player->position.y);
 	}
 	window.draw(backgroundSprites[0]);
 	window.draw(backgroundSprites[1]);
+	window.draw(backgroundSprites[2]);
+	window.draw(backgroundSprites[3]);
+
+	/*-----draw platforms------*/
+	for (int i = 0; i < model->levelManager.platforms.size(); i++) {
+		sf::VertexArray plat = model->levelManager.platforms[i]->plat;
+
+		if (model->player->centered && model->player->centeredY) {
+			plat[0].position = sf::Vector2f(CENTER_SCREEN + plat[0].position.x - model->player->position.x, model->levelManager.platforms[i]->y + height / 2 - model->player->position.y);
+			plat[1].position = sf::Vector2f(CENTER_SCREEN + plat[1].position.x - model->player->position.x, model->levelManager.platforms[i]->y + height / 2 - model->player->position.y);
+			plat[2].position = sf::Vector2f(CENTER_SCREEN + plat[2].position.x - model->player->position.x, model->levelManager.platforms[i]->y + 35 + height / 2 - model->player->position.y);
+			plat[3].position = sf::Vector2f(CENTER_SCREEN + plat[3].position.x - model->player->position.x, model->levelManager.platforms[i]->y + 35 + height / 2 - model->player->position.y);
+		}
+		else if (model->player->centered) { //when player is centered, the platforms should not scroll with him..
+			plat[0].position = sf::Vector2f(CENTER_SCREEN + plat[0].position.x - model->player->position.x, model->levelManager.platforms[i]->y);
+			plat[1].position = sf::Vector2f(CENTER_SCREEN + plat[1].position.x - model->player->position.x, model->levelManager.platforms[i]->y);
+			plat[2].position = sf::Vector2f(CENTER_SCREEN + plat[2].position.x - model->player->position.x, model->levelManager.platforms[i]->y + 35);
+			plat[3].position = sf::Vector2f(CENTER_SCREEN + plat[3].position.x - model->player->position.x, model->levelManager.platforms[i]->y + 35);
+		}
+
+		sf::Texture platTex;
+		platTex = imageManager.get_texture("Assets/grassHalf.png");
+		platTex.setRepeated(true);
+		window.draw(plat, &platTex);
+	}
 
 	/*-----handle the enemies-----*/
-	for (int i = 0; i < model->enemies.size(); i++) {
-		sf::Sprite enemy = model->enemies[i]->sprite;
+	for (int i = 0; i < model->levelManager.enemies.size(); i++) {
+		sf::Sprite enemy = model->levelManager.enemies[i]->sprite;
 		enemy.setTexture(imageManager.get_texture("Assets/goomba.bmp", sf::Color::White), true);
 		if (model->player->centered) { //when player is centered, the goombas should not scroll with him..
 			enemy.setPosition(CENTER_SCREEN + enemy.getPosition().x - model->player->position.x, enemy.getPosition().y);
 		}
-		window.draw(enemy);
-	}
-
-	/*-----draw platforms------*/
-	for (int i = 0; i < model->platforms.size(); i++) {
-		sf::RectangleShape plat = model->platforms[i]->plat;
-		if (model->player->centered) { //when player is centered, the platforms should not scroll with him..
-			plat.setPosition(CENTER_SCREEN + plat.getPosition().x - model->player->position.x, plat.getPosition().y);
+		if (model->player->position.y < height / 2) {
+			enemy.setPosition(enemy.getPosition().x, enemy.getPosition().y + height / 2 - model->player->position.y);
 		}
-		window.draw(plat);
+		window.draw(enemy);
 	}
 
 	/*-----render stuff-----*/
 	for (int i = 0; i < renderables.size(); i++) {
 		window.draw(renderables[i]->sprite);
+	}
+
+	//BULLETS
+	for (int i = 0; i < model->player->bullets.size(); i++) {
+		sf::Sprite currBullet = model->player->bullets[i]->sprite;
+		currBullet.setTexture(imageManager.get_texture("Assets/bulletRight.png"), true);
+		if (model->player->centered) { //when player is centered, the goombas should not scroll with him..
+			currBullet.setPosition(CENTER_SCREEN + model->player->bullets[i]->position.x - model->player->position.x, model->player->bullets[i]->position.y);
+		}
+		if (model->player->position.y < height / 2) {
+			currBullet.setPosition(CENTER_SCREEN + model->player->bullets[i]->position.x - model->player->position.x, model->player->bullets[i]->position.y + height / 2 - model->player->position.y);
+		}
+		window.draw(currBullet);
 	}
 
 	ss.str(""); //clear and update score UI
@@ -92,40 +138,3 @@ void View::render() {
 	window.draw(text);
 	window.display();
 }
-
-/*
-//SCROLL THE MIDGROUND TILES
-for (int i = 0; i < model->mapRows; i++) {
-for (int j = 0; j < model->mapCols; j++) {
-mapSprites[i][j].setPosition((j * xOffset) + (MID_X)-(model->player->x*xOffset), (i * yOffset) + (MID_Y)-(model->player->y*yOffset));
-}
-}
-
-//ENEMIES
-for (int i = 0; i < model->enemies.size(); i++) {
-sf::Sprite currEnemy = model->enemies[i]->sprite;
-currEnemy.setTexture(enemyTexture);
-currEnemy.setPosition((model->enemies[i]->x*xOffset) + (MID_X + 32) - (model->player->x * xOffset), (model->enemies[i]->y*yOffset) + (MID_Y + 32) - (model->player->y*yOffset));
-window.draw(currEnemy);
-}
-
-//BULLETS
-for (int i = 0; i < model->player->bullets.size(); i++) {
-sf::Sprite currBullet = model->player->bullets[i]->sprite;
-currBullet.setTexture(bulletTexture);
-currBullet.setPosition((model->player->bullets[i]->x*xOffset) + (MID_X + 32) - (model->player->x * xOffset), (model->player->bullets[i]->y*yOffset) + (MID_Y + 32) - (model->player->y*yOffset));
-window.draw(currBullet);
-}
-
-std::stringstream ss;
-ss.str("");
-ss << "Score: " << model->score;
-text.setString(ss.str()); //displays the score during the game
-
-//TEXT
-font.loadFromFile("Assets/arial.ttf");
-text.setFont(font);
-text.setFillColor(sf::Color::Magenta);
-text.setCharacterSize(14);
-text.setPosition(5, 5);
-*/

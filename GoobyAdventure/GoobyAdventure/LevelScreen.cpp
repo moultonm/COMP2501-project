@@ -2,7 +2,7 @@
 
 LevelScreen::LevelScreen() : index(0) {
 	// load a font
-	font.loadFromFile("Assets/arial.ttf");
+	font.loadFromFile("Assets/Escalope_Crust-One.ttf");
 
 	// set up the text at the top
 	levelscreen.setFont(font);

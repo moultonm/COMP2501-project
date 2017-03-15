@@ -1,16 +1,17 @@
 #include "Enemy.h"
 
 Enemy::Enemy() {
-	Enemy(CENTER_SCREEN); //defaults our enemy to the middle of the screen
+	Enemy(CENTER_SCREEN, 600); //defaults our enemy to the middle of the screen
 }
 
-Enemy::Enemy(int x) {
+Enemy::Enemy(int x, int y) {
 	accumulatedTime = sf::seconds(0);
 	position.x = x;
-	position.y = 600;
+	position.y = y;
 	velocity.x = 0;
 	velocity.y = 0;
 	speed = 125;
+	//sprite.setOrigin(52, 54);
 }
 
 Enemy::~Enemy() {
@@ -31,5 +32,6 @@ void Enemy::update(sf::Time deltaTime) {
 	}
 
 	position.x += velocity.x * deltaTime.asSeconds();
+	if (position.x < 0) velocity.x = +speed; //don't let the enemies leave the left bound of the screen
 	sprite.setPosition(position);
 }

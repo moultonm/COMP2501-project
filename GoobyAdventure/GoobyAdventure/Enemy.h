@@ -6,7 +6,7 @@
 class Enemy : public Updateable, public Renderable {
 public:
 	Enemy();
-	Enemy(int); //constructs our enemy at a given x coordinate
+	Enemy(int, int); //constructs our enemy at a given x,y coordinate
 	~Enemy();
 
 	void update(sf::Time); //Enemy updates his position based on his velocity?

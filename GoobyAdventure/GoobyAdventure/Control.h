@@ -15,4 +15,5 @@ public:
 private:
 	Model* model;
 	View* view;
+	int counter;
 };

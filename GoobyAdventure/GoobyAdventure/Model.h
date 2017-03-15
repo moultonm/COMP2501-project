@@ -7,6 +7,7 @@
 #include "Crafting.h"
 #include "Platform.h"
 #include "LevelScreen.h"
+#include "LevelManager.h"
 
 class Model {
 public:
@@ -21,12 +22,12 @@ public:
 	Crafting* crafting; // this is a pointer to the crafting menu
 	LevelScreen* levelScreen;
 
+	LevelManager levelManager;
+
 	int* gameState; //keeps track of global gamestate in model
 	int score;
 
-	sf::Time spawner; //accumulates time until we should spawn a new enemy
-	std::vector<Enemy*> enemies;
-
-	std::vector<Platform*> platforms; //its a platformer
 	std::vector<Item*> items;
+
+	int counter;
 };

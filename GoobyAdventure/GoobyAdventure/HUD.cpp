@@ -7,7 +7,7 @@ HUD::HUD() {
 	armourTex.loadFromImage(armourIm);
 	armour.setTexture(armourTex);
 	armour.setPosition(10, 10);
-	font.loadFromFile("Assets/arial.ttf");
+	font.loadFromFile("Assets/Escalope_Crust-One.ttf");
 	points.setFont(font);
 	points.setCharacterSize(30);
 	points.setFillColor(sf::Color::White);
@@ -17,7 +17,7 @@ HUD::HUD() {
 HUD::~HUD() {}
 
 void HUD::render(sf::RenderWindow* window) {
-	window->draw(points);
+	//window->draw(points);
 	window->draw(armour);
 }
 
