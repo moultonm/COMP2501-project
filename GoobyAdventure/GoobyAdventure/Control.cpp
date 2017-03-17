@@ -35,9 +35,6 @@ void Control::inputs() {
 						view->text.setCharacterSize(16);
 						view->text.setPosition(25, 25);
 					}
-					else if (model->levelScreen->index == 1) {
-						*gameState = CRAFT;
-					}
 				}
 
 			}
@@ -93,9 +90,14 @@ void Control::inputs() {
 						model->crafting->boxSelector.setPosition(520, 370);
 					}
 					else { //CRAFTTTTTT
-						model->crafting->craft(model->items);
+						model->crafting->craft(model->items, model->player);
 						model->crafting->boxSelector.setPosition(395, 120);
 					}
+				}
+			}
+			else if (*gameState == LEVEL) {
+				if (event.key.code == sf::Keyboard::Return) {
+					*gameState = CRAFT;
 				}
 			}
 			else {

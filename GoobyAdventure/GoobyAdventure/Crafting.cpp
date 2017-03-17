@@ -144,6 +144,7 @@ void Crafting::render(sf::RenderWindow* window) {
 void Crafting::menu(std::vector<Item*>& items) {
 	itemToSel.clear();
 	itemToSel.reserve(items.size());
+	std::cout << items.size() << std::endl;
 	for (int i = 0; i < items.size(); i++) {
 		if (items[i]->getTier() == 1) {
 			itemToSel.push_back(sf::Text(items[i]->getName(), font, 15));
@@ -156,19 +157,43 @@ void Crafting::menu(std::vector<Item*>& items) {
 
 
 
-void Crafting::craft(std::vector<Item*>& items) {
+void Crafting::craft(std::vector<Item*>& items, Player* p) {
 	//check what item one is against item two
 	if (select1->getTier() != 1 || select2->getTier() != 1) {
 		select1 = 0;
 		select2 = 0;
 		return;
 	}
+	// THINGS STACK
+	// bullet x
+		//red goo = fire gun
+		// green goo = extra boing bullets
+	// red goo 
+		// boots = boots of leaping
+		// bullet = fire gun
+	// green goo
+		// armour = bones of your enemies
+		// bullet = extra boing bullets
+	// boots
+		// red goo = boots of leaping
+		// green goo = heavy armour
+	// armour
+		// red goo = fashionable space suit
+		// green goo = bones of your enemies
+	
 
 	if (select1->getName() == "bullet") {
-		if (select2->getName() == "flux capacitor") {
+		if (select2->getName() == "red goo") { // a fire gun gives you +5 fire bullets
 			toMake = new Item(2, "fire gun");
-			craftDesc.setString(toMake->getDef());
-			craftName.setString(toMake->getName());
+			for (int i = 0; i < 5; i++) {
+				p->bullets.push_back(new FireBullet());
+			}
+		}
+		else if (select2->getName() == "green goo") {
+			toMake = new Item(2, "extra boing bullets"); // an extra boing bullets gives you +5 extra boing bullets
+			for (int i = 0; i < 5; i++) {
+				p->bullets.push_back(new BoingBullet());
+			}
 		}
 		else {
 			select1 = 0;
@@ -176,11 +201,20 @@ void Crafting::craft(std::vector<Item*>& items) {
 			return;
 		}
 	}
-	else if (select1->getName() == "flux capacitor") {
+	else if (select1->getName() == "red goo") {
 		if (select2->getName() == "bullet") {
-			toMake = new Item(2, "fire gun");
-			craftDesc.setString(toMake->getDef());
-			craftName.setString(toMake->getName());
+			toMake = new Item(2, "fire gun"); 
+			for (int i = 0; i < 5; i++) {
+				p->bullets.push_back(new FireBullet());
+			}
+		}
+		else if (select2->getName() == "boots") {
+			toMake = new Item(2, "boots of leaping"); // increases jump height by 1
+			p->jumpHeight+=40;
+		} 
+		else if (select2->getName() == "armour") {
+			toMake = new Item(2, "fashionable space suit"); // increases speed by 1
+			p->speed+=30;
 		}
 		else {
 			select1 = 0;
@@ -188,12 +222,92 @@ void Crafting::craft(std::vector<Item*>& items) {
 			return;
 		}
 	}
+	else if (select1->getName() == "boots") {
+		if (select2->getName() == "red goo") {
+			toMake = new Item(2, "boots of leaping");
+			p->jumpHeight+=40;
+		}
+		else if (select2->getName() == "green goo") {
+			toMake = new Item(2, "heavy boots"); // decreases jump height by 1, increases armour by 1
+			p->jumpHeight-=40;
+			p->armour++;
+		}
+		else {
+			select1 = 0;
+			select2 = 0;
+			return;
+		}
+	}
+	else if (select1->getName() == "green goo") {
+		if (select2->getName() == "armour") {
+			toMake = new Item(2, "bones of your enemies"); // increases hp/armour by 1
+			p->armour++;
+		}
+		else if (select2->getName() == "boots") {
+			toMake = new Item(2, "heavy boots");
+			p->jumpHeight-=40;
+			p->armour++;
+		}
+		else if (select2->getName() == "bullet") {
+			toMake = new Item(2, "extra boing bullets");
+			for (int i = 0; i < 5; i++) {
+				p->bullets.push_back(new BoingBullet());
+			}
+		}
+		else {
+			select1 = 0;
+			select2 = 0;
+			return;
+		}
+	}
+	else if (select1->getName() == "armour") {
+		if (select2->getName() == "green goo") {
+			toMake = new Item(2, "bones of your enemies");
+			p->armour++;
+		}
+		else if (select2->getName() == "red goo") {
+			toMake = new Item(2, "fashionable space suit");
+			p->speed+=30;
+		}
+		else {
+			select1 = 0;
+			select2 = 0;
+			return;
+		}
+	} 
 	else {
 		select1 = 0;
 		select2 = 0;
 		return;
 	}
-	items.push_back(toMake);
+
+
+	craftDesc.setString(toMake->getDef());
+	craftName.setString(toMake->getName());
+	select1->amount--;
+	select2->amount--;
+
+	bool added = false;
+	for (int i = 0; i < items.size(); i++) {
+		if (items[i]->getName() == toMake->getName()) {
+			if (toMake->getName() == "fire bullets" || toMake->getName() == "extra boing bullets") {
+				items[i]->amount += 5;
+				added = true;
+			}
+			else {
+				items[i]->amount++;
+				added = true;
+			}
+		}
+		if (items[i]->amount <= 0) {
+			for (int j = i; j < items.size()-1; j++) {
+				items[j] = items[j + 1];
+			}
+			items.pop_back();
+		}
+	}
+	
+	if(!added) { items.push_back(toMake); }
 	select1 = 0;
 	select2 = 0;
 	itemDesc.setString("");

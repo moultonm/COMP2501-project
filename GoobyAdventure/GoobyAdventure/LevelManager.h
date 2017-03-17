@@ -3,6 +3,8 @@
 #include "Updateable.h"
 #include "Enemy.h"
 #include "Platform.h"
+#include "Loot.h"
+#include "Player.h"
 
 class LevelManager : Updateable {
 public:
@@ -10,11 +12,14 @@ public:
 	~LevelManager();
 	void update(sf::Time);
 	void generateLevel(int); //spawns the current level being played
+	bool screenLimit(float);
 
 	int currentLevel;
 
 	sf::Time spawner; //accumulates time until we should spawn a new enemy
-	std::vector<Enemy*> enemies;
+	Player* player;
 
+	std::vector<Enemy*> enemies;
+	std::vector<Loot*> loot;
 	std::vector<Platform*> platforms; //its a platformer
 };

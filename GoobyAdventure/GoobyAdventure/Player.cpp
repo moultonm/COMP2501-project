@@ -4,7 +4,7 @@ Player::Player() {
 
 	groundLevel = 600;
 	position.x = 15;
-	position.y = groundLevel;
+	position.y = groundLevel-50;
 	centered = false;
 	centeredY = false;
 	isJumping = false;
@@ -14,8 +14,9 @@ Player::Player() {
 
 	counter = 0;
 
+	coins = 0;
 	facing = 0;
-
+	armour = 2;
 	speed = 250;
 	jumpSpeed = 400;
 	jumpHeight = 150;

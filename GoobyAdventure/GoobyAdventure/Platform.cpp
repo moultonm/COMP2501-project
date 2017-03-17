@@ -5,6 +5,7 @@ Platform::Platform(int x, int y, int w) {
 	this->y = y;
 	width = w;
 	height = 35;
+	upwards = true;
 	//texture->loadFromFile("Assets/grassHalf.png");
 	//texture->setRepeated(true);
 	plat.setPrimitiveType(sf::Quads);

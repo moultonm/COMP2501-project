@@ -18,7 +18,7 @@ bullet + flux capacitor = fire shooter
 class Item : public Renderable {
 public:
 	Item();
-	Item(int, std::string);
+	Item(int, std::string, int amount = 0);
 	~Item();
 	int getTier();
 	std::string getName();
@@ -26,9 +26,10 @@ public:
 	int getAmount();
 	sf::Image image;
 	sf::Texture texture;
+	int amount;
 private:
 	int tier; // this will tell whether an item can be used or not in crafting
-	int amount;
+	
 	std::string name;
 	std::string def;
 

@@ -12,7 +12,7 @@ View::View(Model* m) {
 
 	//initialize our window
 	window.create(sf::VideoMode(width, height), "COMP2501-Gooby_Space_Adventure");
-	window.setFramerateLimit(45);
+	window.setFramerateLimit(60);
 
 	//initializes title text for now
 	font.loadFromFile("Assets/Escalope_Crust-One.ttf");
@@ -131,8 +131,22 @@ void View::render() {
 		window.draw(currBullet);
 	}
 
+	//LOOT
+	for (int i = 0; i < model->levelManager.loot.size(); i++) {
+		sf::Sprite currLoot = model->levelManager.loot[i]->sprite;
+		currLoot.setTexture(imageManager.get_texture("Assets/coin.png"), true);
+		if (model->player->centered) { //when player is centered, the loot should not scroll with him..
+			currLoot.setPosition(CENTER_SCREEN + model->levelManager.loot[i]->x - model->player->position.x, model->levelManager.loot[i]->y);
+		}
+		if (model->player->position.y < height / 2) {
+			currLoot.setPosition(CENTER_SCREEN + model->levelManager.loot[i]->x - model->player->position.x, model->levelManager.loot[i]->y + height / 2 - model->player->position.y);
+		}
+		window.draw(currLoot);
+	}
+
 	ss.str(""); //clear and update score UI
-	ss << "Score: " << model->score;
+	ss << "Score: " << model->score << std::endl;
+	ss << "Coins: " << model->player->coins;
 	text.setString(ss.str());
 	hud->render(&window);
 	window.draw(text);

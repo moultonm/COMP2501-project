@@ -1,25 +1,46 @@
 #include "Model.h"
 
 Model::Model() {
+	player = new Player();
 	score = 0;
 	crafting = new Crafting();
 	levelScreen = new LevelScreen();
 	items.reserve(5);
-	items.push_back(new Item(1, "bullet"));
-	items.push_back(new Item(1, "flux capacitor"));
+	items.push_back(new Item(1, "bullet", 3));
+	items.push_back(new Item(1, "red goo", 5));
+	items.push_back(new Item(1, "boots", 4));
+	levelManager.player = player;
 }
 
 Model::~Model() {
 
 }
 
+//many of these loops can be combined, but that can be optimized later
 void Model::update(sf::Time deltaTime) {
 	if (*gameState != GAME) {
 		return; //don't update anything if we haven't started the game yet
 	}
 
+	/*-----check if platform is blocking player-----*/
+	for (int i = 0; i < levelManager.platforms.size(); i++) {
+		//stop moving right if there is a plat in the way
+		if (player->velocity.x > 0 && player->position.x + 43 >= levelManager.platforms[i]->x && player->position.x + 38 < levelManager.platforms[i]->x
+			&& levelManager.platforms[i]->y > player->position.y+10	&& levelManager.platforms[i]->y < player->position.y + 90) {
+			player->velocity.x = 0;
+		}//stop moving left if there is a plat in the way
+		if (player->velocity.x < 0 && player->position.x + 25 >= levelManager.platforms[i]->x + levelManager.platforms[i]->width && player->position.x + 20 < levelManager.platforms[i]->x + levelManager.platforms[i]->width
+			&& levelManager.platforms[i]->y > player->position.y + 10 && levelManager.platforms[i]->y < player->position.y + 90) {
+			player->velocity.x = 0;
+		}
+	}
 
-	/*-----spawn new enemies into the game-----*/
+	/*-----check if player hits right edge of world-----*/
+	if (levelManager.screenLimit(player->position.x)) { //do we care to un-center the player at this point too? fix the camera like leftside..
+		player->velocity.x = -player->speed;
+	}
+
+	/*-----level manager can spawn enemies, move platforms etc.-----*/
 	levelManager.update(deltaTime);
 
 	/*-----updateables-----*/
@@ -30,7 +51,7 @@ void Model::update(sf::Time deltaTime) {
 	/*-----check if player is on a platform-----*/
 	bool gotOne = false;
 	for (int i = 0; i < levelManager.platforms.size(); i++) {
-		if (player->position.x + 40 > levelManager.platforms[i]->x && player->position.x + 25 < levelManager.platforms[i]->x + levelManager.platforms[i]->width
+		if (player->position.x + 43 > levelManager.platforms[i]->x && player->position.x + 20 < levelManager.platforms[i]->x + levelManager.platforms[i]->width
 			&& player->position.y + 90 <= levelManager.platforms[i]->y) { //have to mess with the player's coordinates since the sprite is crappy
 			player->groundLevel = levelManager.platforms[i]->y - 90; //set groundlevel to the platform we are on (-90 is to match the sprites feet instead of his top box)
 			gotOne = true;
@@ -42,6 +63,9 @@ void Model::update(sf::Time deltaTime) {
 
 	/*-----update enemies-----*/
 	for (int i = 0; i < levelManager.enemies.size(); i++) {
+		if (levelManager.screenLimit(levelManager.enemies[i]->position.x)) { //make sure enemy doesn't leave rightside of screen
+			levelManager.enemies[i]->velocity.x = -levelManager.enemies[i]->speed;
+		}
 		levelManager.enemies[i]->update(deltaTime);
 		/*-----attempt to kill enemy by jumping on him-----*/
 		if (player->isJumping && player->position.y + 22 > levelManager.enemies[i]->position.y - 65 && player->position.y + 22 < levelManager.enemies[i]->position.y + 15 &&
@@ -58,12 +82,19 @@ void Model::update(sf::Time deltaTime) {
 		}
 	}
 
+	//DESPAWN LOOTED LOOT
+	for (int i = 0; i < levelManager.loot.size(); i++) {
+		if (levelManager.loot[i]->looted) {
+			levelManager.loot.erase(levelManager.loot.begin() + i);
+		}
+	}
+
 	//UPDATE BULLETS
 	for (int i = 0; i < player->bullets.size(); i++) {
 		player->bullets[i]->update(deltaTime);
 	}
 
-	//CHECK COLLISION WITH BULLETS
+	//CHECK COLLISION WITH BULLETSxENEMIES
 	for (int i = 0; i < player->bullets.size(); i++) {
 		for (int j = 0; j < levelManager.enemies.size(); j++) {
 			if (pow((player->bullets[i]->position.x + 32) - (levelManager.enemies[j]->position.x + 52), 2) +
@@ -77,7 +108,18 @@ void Model::update(sf::Time deltaTime) {
 		}
 	}
 
-	//CHECK COLLISION WITH PLAYER
+	//CHECK COLLISION WITH LOOTxPLAYER
+	for (int j = 0; j < levelManager.loot.size(); j++) {
+		if (pow((player->position.x + 40) - (levelManager.loot[j]->x + 32), 2) +
+			pow((player->position.y + 61) - (levelManager.loot[j]->y + 32), 2) <=
+			pow(25 + 32, 2)) {
+			if (!levelManager.loot[j]->looted) player->coins += levelManager.loot[j]->value;
+			levelManager.loot[j]->looted = true;
+			break;
+		}
+	}
+
+	//CHECK COLLISION WITH PLAYERxENEMIES
 	for (int j = 0; j < levelManager.enemies.size(); j++) {
 		player->sprite.setColor(sf::Color::Green);
 		if (pow((player->position.x + 40) - (levelManager.enemies[j]->position.x + 52), 2) +

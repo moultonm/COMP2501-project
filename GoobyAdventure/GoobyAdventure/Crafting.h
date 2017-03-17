@@ -2,6 +2,10 @@
 #include <SFML/Graphics.hpp>
 #include "defs.h"
 #include "Item.h"
+#include "Bullet.h"
+#include "FireBullet.h"
+#include "BoingBullet.h"
+#include "Player.h"
 #include <string>
 #include <iostream>
 #include <vector>
@@ -11,7 +15,7 @@ public:
 	Crafting();
 	~Crafting();
 	void render(sf::RenderWindow*);
-	void craft(std::vector<Item*>&);
+	void craft(std::vector<Item*>&, Player*);
 	void menu(std::vector<Item*>&);
 	Item* select1;
 	Item* select2;

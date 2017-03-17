@@ -152,15 +152,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BoingBullet.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Control.cpp" />
     <ClCompile Include="Crafting.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="FireBullet.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="LevelScreen.cpp" />
+    <ClCompile Include="Loot.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Manager.cpp" />
     <ClCompile Include="Model.cpp" />
@@ -169,16 +172,19 @@
     <ClCompile Include="View.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BoingBullet.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Control.h" />
     <ClInclude Include="Crafting.h" />
     <ClInclude Include="defs.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="FireBullet.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="LevelManager.h" />
     <ClInclude Include="LevelScreen.h" />
+    <ClInclude Include="Loot.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Platform.h" />

@@ -16,7 +16,7 @@ public:
 	void fireBullet();
 	//facing - holds direction so we know which way to fire bullets? also sprite flipping
 	int facing;
-	std::vector<Bullet*> bullets;
+	std::vector<Bullet*> bullets; // these are bullets that are being held!
 
 	sf::Vector2f velocity;
 
@@ -25,8 +25,9 @@ public:
 	bool isJumping;
 	bool isMoving;
 
+	int coins;
 	int counter;
-
+	int armour;
 	int groundLevel; //the height the player belongs at (no flying allowed!!) -> maybe this is an attribute of the level instead of player later
 	int jumpHeight;
 	int jumpLocation; //stores initial height jumped from

@@ -2,7 +2,6 @@
 
 Game::Game() {
 	model = new Model();
-	model->player = new Player();
 	view = new View(model);
 	control = new Control(model, view);
 

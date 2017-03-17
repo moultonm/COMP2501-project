@@ -5,7 +5,7 @@ Enemy::Enemy() {
 }
 
 Enemy::Enemy(int x, int y) {
-	accumulatedTime = sf::seconds(0);
+	accumulatedTime = sf::seconds(3);
 	position.x = x;
 	position.y = y;
 	velocity.x = 0;
