@@ -4,6 +4,11 @@ Authors:
 Alexandra Wilson (100998162)
 Matthew Moulton (101010631)
 
+Bugs in this version:
+- Player sprite is 'falling' instead of 'standing' while on moving platform
+- Player sprite is always right-facing when 'falling' (but its fine when jumping)
+- Camera draws the wrong platforms when you reach the upper-left part of the level
+
 CONTROLS:
 - From Title Screen: Space to start game
 - From Level Select: W/S to change selection, Enter to choose selection
