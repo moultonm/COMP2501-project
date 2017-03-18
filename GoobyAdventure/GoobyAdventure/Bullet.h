@@ -10,7 +10,7 @@ public:
 	void update(sf::Time);
 
 	sf::Vector2f velocity;
-	const static int speed = 320;
+	const static int speed = 360;
 
 	float timeToLive;
 };

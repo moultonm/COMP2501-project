@@ -5,6 +5,9 @@ LevelManager::LevelManager() {
 	currentLevel = 1; //we start the game on level 1
 	generateLevel(currentLevel);
 
+	exit.setSize(sf::Vector2f(75, 50));
+	exit.setFillColor(sf::Color::Blue);
+
 	/*
 	//random platform example
 	for (int i = 0; i < 20; i++) {
@@ -18,11 +21,12 @@ LevelManager::~LevelManager() {
 }
 
 void LevelManager::update(sf::Time deltaTime) {
-	//moving platform starts at (3800, 630, 200) and it moves up to (3800, -200, 200)
+	exit.setPosition(exitx, exity);
+	//moving platform starts at (3800, 630, 200) and it moves up to (3800, -250, 200)
 	if (currentLevel == 1) {
 		Platform* movingPlat = platforms.back();
 		float tempY = movingPlat->y;
-		if (movingPlat->y <= -200) movingPlat->upwards = false;
+		if (movingPlat->y <= -250) movingPlat->upwards = false;
 		else if (movingPlat->y >= 630) movingPlat->upwards = true;
 		if (movingPlat->upwards) {
 			movingPlat->y -= 125 * deltaTime.asSeconds();
@@ -36,7 +40,9 @@ void LevelManager::update(sf::Time deltaTime) {
 			&& player->position.y + 90 <= tempY) {
 			player->groundLevel = movingPlat->y - 90;
 			player->position.y -= 125 * deltaTime.asSeconds();
+			player->movePlat = true;
 		}
+		else { player->movePlat = false; }
 	}
 
 	/*-----spawn new enemies into the game-----*/
@@ -83,25 +89,29 @@ void LevelManager::generateLevel(int level) {
 		platforms.push_back(new Platform(2300, -340, 400)); //upper middle landing
 		platforms.push_back(new Platform(0, -340, 2300)); //upper exit
 
-		//moving platform starts at (3800, 630, 200) and it moves up to (3800, -200, 200)
+		//moving platform starts at (3800, 630, 200) and it moves up to (3800, -250, 200)
 		platforms.push_back(new Platform(3800, 630, 200));
 
 		loot.push_back(new Loot(2470, 135)); //loot on top platform
 		loot.push_back(new Loot(3300, 605)); //loot on ground
 		loot.push_back(new Loot(3200, -260)); //upper loot
+		loot.push_back(new Loot(1200, -400));
+		exitx = 100;
+		exity = -390;
+		exit.setPosition(exitx, exity);
 
 		//ENEMIES
-		enemies.push_back(new Enemy(400, 570));
-		enemies.push_back(new Enemy(800, 570));
-		enemies.push_back(new Enemy(1200, 570));
-		enemies.push_back(new Enemy(1800, 570));
-		enemies.push_back(new Enemy(3000, 570));
-		enemies.push_back(new Enemy(3400, 570));
-		enemies.push_back(new Enemy(3800, 570));
+		enemies.push_back(new Enemy(400, 585));
+		enemies.push_back(new Enemy(800, 585));
+		enemies.push_back(new Enemy(1200, 585));
+		enemies.push_back(new Enemy(1800, 585));
+		enemies.push_back(new Enemy(3000, 585));
+		enemies.push_back(new Enemy(3400, 585));
+		enemies.push_back(new Enemy(3800, 585));
 		//upper
-		enemies.push_back(new Enemy(400, -435));
-		enemies.push_back(new Enemy(1200, -435));
-		enemies.push_back(new Enemy(1600, -435));
-		enemies.push_back(new Enemy(2000, -435));
+		enemies.push_back(new Enemy(400, -420));
+		enemies.push_back(new Enemy(1200, -420));
+		enemies.push_back(new Enemy(1600, -420));
+		enemies.push_back(new Enemy(2000, -420));
 	}
 }

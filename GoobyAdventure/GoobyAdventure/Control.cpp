@@ -32,6 +32,7 @@ void Control::inputs() {
 				else if (event.key.code == sf::Keyboard::Return) {
 					if (model->levelScreen->index == 0) {
 						*gameState = GAME;
+						model->levelManager.currentLevel = 1;
 						view->text.setCharacterSize(16);
 						view->text.setPosition(25, 25);
 					}
@@ -43,11 +44,10 @@ void Control::inputs() {
 			//SO: buckle in because here's why we're using key release here instead of something else.
 			// 1) it happens once so it's more precise than just using key pressed
 			// 2) we're polling for events here so we're gonna try using keyPressed in the future but for now? nah
+			if (event.key.code == sf::Keyboard::Escape) {// get out of here to the level screen
+				*gameState = LEVEL;
+			}
 			if (*gameState == CRAFT) {
-				if (event.key.code == sf::Keyboard::Escape) {// get out of here to the level screen
-					*gameState = LEVEL;
-				}
-
 				if (model->crafting->select1 == 0 || model->crafting->select2 == 0) {
 					//still picking ingredients
 					if (event.key.code == sf::Keyboard::W) {

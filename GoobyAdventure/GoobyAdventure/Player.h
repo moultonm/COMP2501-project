@@ -22,8 +22,11 @@ public:
 
 	bool centered; //is the camera centered on the player?
 	bool centeredY; //vertical centering
+	bool centeredR; //right edge of world
 	bool isJumping;
 	bool isMoving;
+	bool isFalling;
+	bool movePlat;
 
 	int coins;
 	int counter;

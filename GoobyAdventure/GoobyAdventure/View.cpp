@@ -66,7 +66,7 @@ void View::render() {
 		backgroundSprites[2].setPosition(0 - ((int)model->player->position.x % width), -height);
 		backgroundSprites[3].setPosition(1024 - ((int)model->player->position.x % width), -height);
 	}
-	if (model->player->position.y < height / 2) {
+	if (model->player->centeredY) {
 		backgroundSprites[0].setPosition(backgroundSprites[0].getPosition().x, height / 2 - model->player->position.y);
 		backgroundSprites[1].setPosition(backgroundSprites[1].getPosition().x, height / 2 - model->player->position.y);
 		backgroundSprites[2].setPosition(backgroundSprites[2].getPosition().x, -height + height / 2 - model->player->position.y);
@@ -93,21 +93,34 @@ void View::render() {
 			plat[2].position = sf::Vector2f(CENTER_SCREEN + plat[2].position.x - model->player->position.x, model->levelManager.platforms[i]->y + 35);
 			plat[3].position = sf::Vector2f(CENTER_SCREEN + plat[3].position.x - model->player->position.x, model->levelManager.platforms[i]->y + 35);
 		}
+		else if (model->player->centeredY) {
+			plat[0].position = sf::Vector2f(plat[0].position.x, model->levelManager.platforms[i]->y + height / 2 - model->player->position.y);
+			plat[1].position = sf::Vector2f(plat[1].position.x, model->levelManager.platforms[i]->y + height / 2 - model->player->position.y);
+			plat[2].position = sf::Vector2f(plat[2].position.x, model->levelManager.platforms[i]->y + 35 + height / 2 - model->player->position.y);
+			plat[3].position = sf::Vector2f(plat[3].position.x, model->levelManager.platforms[i]->y + 35 + height / 2 - model->player->position.y);
+		}
 
 		sf::Texture platTex;
 		platTex = imageManager.get_texture("Assets/grassHalf.png");
 		platTex.setRepeated(true);
 		window.draw(plat, &platTex);
 	}
+	if (model->player->centered) {
+		model->levelManager.exit.setPosition(CENTER_SCREEN + model->levelManager.exitx - model->player->position.x, model->levelManager.exit.getPosition().y);
+	}
+	if (model->player->centeredY) {
+		model->levelManager.exit.setPosition(model->levelManager.exit.getPosition().x, model->levelManager.exity + height/2 - model->player->position.y);
+	}
+	window.draw(model->levelManager.exit);
 
 	/*-----handle the enemies-----*/
 	for (int i = 0; i < model->levelManager.enemies.size(); i++) {
 		sf::Sprite enemy = model->levelManager.enemies[i]->sprite;
-		enemy.setTexture(imageManager.get_texture("Assets/goomba.bmp", sf::Color::White), true);
+		enemy.setTexture(imageManager.get_texture("Assets/goomba.png"), true);
 		if (model->player->centered) { //when player is centered, the goombas should not scroll with him..
 			enemy.setPosition(CENTER_SCREEN + enemy.getPosition().x - model->player->position.x, enemy.getPosition().y);
 		}
-		if (model->player->position.y < height / 2) {
+		if (model->player->centeredY) {
 			enemy.setPosition(enemy.getPosition().x, enemy.getPosition().y + height / 2 - model->player->position.y);
 		}
 		window.draw(enemy);
@@ -121,14 +134,28 @@ void View::render() {
 	//BULLETS
 	for (int i = 0; i < model->player->bullets.size(); i++) {
 		sf::Sprite currBullet = model->player->bullets[i]->sprite;
-		currBullet.setTexture(imageManager.get_texture("Assets/bulletRight.png"), true);
-		if (model->player->centered) { //when player is centered, the goombas should not scroll with him..
-			currBullet.setPosition(CENTER_SCREEN + model->player->bullets[i]->position.x - model->player->position.x, model->player->bullets[i]->position.y);
+		currBullet.setTexture(imageManager.get_texture("Assets/playerbullet.png"), true);
+		if (model->player->centered) { //when player is centered, the bullets should not scroll with him..
+			currBullet.setPosition(CENTER_SCREEN + model->player->bullets[i]->position.x - model->player->position.x, currBullet.getPosition().y);
 		}
-		if (model->player->position.y < height / 2) {
-			currBullet.setPosition(CENTER_SCREEN + model->player->bullets[i]->position.x - model->player->position.x, model->player->bullets[i]->position.y + height / 2 - model->player->position.y);
+		if (model->player->centeredY) {
+			currBullet.setPosition(currBullet.getPosition().x, model->player->bullets[i]->position.y + height / 2 - model->player->position.y);
 		}
 		window.draw(currBullet);
+	}
+	//ENEMY BULLETS
+	for (int i = 0; i < model->levelManager.enemies.size(); i++) {
+		for (int j = 0; j < model->levelManager.enemies[i]->bullets.size(); j++) {
+			sf::Sprite currBullet = model->levelManager.enemies[i]->bullets[j]->sprite;
+			currBullet.setTexture(imageManager.get_texture("Assets/enemyBullet.png"), true);
+			if (model->player->centered) {
+				currBullet.setPosition(CENTER_SCREEN + model->levelManager.enemies[i]->bullets[j]->position.x - model->player->position.x, currBullet.getPosition().y);
+			}
+			if (model->player->centeredY) {
+				currBullet.setPosition(currBullet.getPosition().x, model->levelManager.enemies[i]->bullets[j]->position.y + height / 2 - model->player->position.y);
+			}
+			window.draw(currBullet);
+		}
 	}
 
 	//LOOT
@@ -136,10 +163,10 @@ void View::render() {
 		sf::Sprite currLoot = model->levelManager.loot[i]->sprite;
 		currLoot.setTexture(imageManager.get_texture("Assets/coin.png"), true);
 		if (model->player->centered) { //when player is centered, the loot should not scroll with him..
-			currLoot.setPosition(CENTER_SCREEN + model->levelManager.loot[i]->x - model->player->position.x, model->levelManager.loot[i]->y);
+			currLoot.setPosition(CENTER_SCREEN + model->levelManager.loot[i]->x - model->player->position.x, currLoot.getPosition().y);
 		}
 		if (model->player->position.y < height / 2) {
-			currLoot.setPosition(CENTER_SCREEN + model->levelManager.loot[i]->x - model->player->position.x, model->levelManager.loot[i]->y + height / 2 - model->player->position.y);
+			currLoot.setPosition(currLoot.getPosition().x, model->levelManager.loot[i]->y + height / 2 - model->player->position.y);
 		}
 		window.draw(currLoot);
 	}

@@ -15,10 +15,12 @@ public:
 	bool screenLimit(float);
 
 	int currentLevel;
+	int exitx, exity;
 
 	sf::Time spawner; //accumulates time until we should spawn a new enemy
 	Player* player;
 
+	sf::RectangleShape exit;
 	std::vector<Enemy*> enemies;
 	std::vector<Loot*> loot;
 	std::vector<Platform*> platforms; //its a platformer

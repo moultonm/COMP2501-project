@@ -186,13 +186,13 @@ void Crafting::craft(std::vector<Item*>& items, Player* p) {
 		if (select2->getName() == "red goo") { // a fire gun gives you +5 fire bullets
 			toMake = new Item(2, "fire gun");
 			for (int i = 0; i < 5; i++) {
-				p->bullets.push_back(new FireBullet());
+				//p->bullets.push_back(new FireBullet());
 			}
 		}
 		else if (select2->getName() == "green goo") {
 			toMake = new Item(2, "extra boing bullets"); // an extra boing bullets gives you +5 extra boing bullets
 			for (int i = 0; i < 5; i++) {
-				p->bullets.push_back(new BoingBullet());
+				//p->bullets.push_back(new BoingBullet());
 			}
 		}
 		else {
@@ -205,7 +205,7 @@ void Crafting::craft(std::vector<Item*>& items, Player* p) {
 		if (select2->getName() == "bullet") {
 			toMake = new Item(2, "fire gun"); 
 			for (int i = 0; i < 5; i++) {
-				p->bullets.push_back(new FireBullet());
+				//p->bullets.push_back(new FireBullet());
 			}
 		}
 		else if (select2->getName() == "boots") {
@@ -251,7 +251,7 @@ void Crafting::craft(std::vector<Item*>& items, Player* p) {
 		else if (select2->getName() == "bullet") {
 			toMake = new Item(2, "extra boing bullets");
 			for (int i = 0; i < 5; i++) {
-				p->bullets.push_back(new BoingBullet());
+				//p->bullets.push_back(new BoingBullet());
 			}
 		}
 		else {

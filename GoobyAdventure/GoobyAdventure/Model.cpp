@@ -66,7 +66,7 @@ void Model::update(sf::Time deltaTime) {
 		if (levelManager.screenLimit(levelManager.enemies[i]->position.x)) { //make sure enemy doesn't leave rightside of screen
 			levelManager.enemies[i]->velocity.x = -levelManager.enemies[i]->speed;
 		}
-		levelManager.enemies[i]->update(deltaTime);
+		levelManager.enemies[i]->update(deltaTime, player);
 		/*-----attempt to kill enemy by jumping on him-----*/
 		if (player->isJumping && player->position.y + 22 > levelManager.enemies[i]->position.y - 65 && player->position.y + 22 < levelManager.enemies[i]->position.y + 15 &&
 			player->position.x + 35 > levelManager.enemies[i]->position.x + 10 && player->position.x + 35 < levelManager.enemies[i]->position.x + 94) { //temporary magic numbers are to tighten the hitbox since the sprites aren't boxed well
@@ -80,6 +80,11 @@ void Model::update(sf::Time deltaTime) {
 		if (player->bullets[i]->timeToLive < 0) {
 			player->bullets.erase(player->bullets.begin() + i);
 		}
+	} //and enemy bullets
+	for (int i = 0; i < levelManager.enemies.size(); i++) {
+		for (int j = 0; j < levelManager.enemies[i]->bullets.size(); j++) {
+			if (levelManager.enemies[i]->bullets[j]->timeToLive < 0) levelManager.enemies[i]->bullets.erase(levelManager.enemies[i]->bullets.begin() + j);
+		}
 	}
 
 	//DESPAWN LOOTED LOOT
@@ -92,6 +97,11 @@ void Model::update(sf::Time deltaTime) {
 	//UPDATE BULLETS
 	for (int i = 0; i < player->bullets.size(); i++) {
 		player->bullets[i]->update(deltaTime);
+	} //and enemy bullets
+	for (int i = 0; i < levelManager.enemies.size(); i++) {
+		for (int j = 0; j < levelManager.enemies[i]->bullets.size(); j++) {
+			levelManager.enemies[i]->bullets[j]->update(deltaTime);
+		}
 	}
 
 	//CHECK COLLISION WITH BULLETSxENEMIES
@@ -121,12 +131,12 @@ void Model::update(sf::Time deltaTime) {
 
 	//CHECK COLLISION WITH PLAYERxENEMIES
 	for (int j = 0; j < levelManager.enemies.size(); j++) {
-		player->sprite.setColor(sf::Color::Green);
+		//player->sprite.setColor(sf::Color::Green);
 		if (pow((player->position.x + 40) - (levelManager.enemies[j]->position.x + 52), 2) +
 			pow((player->position.y + 61) - (levelManager.enemies[j]->position.y + 54), 2) <=
 			pow(25 + 26, 2)) {
 			//*gameState = 2; //game over
-			player->sprite.setColor(sf::Color::Red); //for now show collision by updating color
+			//player->sprite.setColor(sf::Color::Red); //for now show collision by updating color
 			break;
 		}
 	}
