@@ -82,10 +82,10 @@ void View::render() {
 		sf::VertexArray plat = model->levelManager.platforms[i]->plat;
 
 		if (model->player->centered && model->player->centeredY) {
-			plat[0].position = sf::Vector2f(CENTER_SCREEN + plat[0].position.x - model->player->position.x, model->levelManager.platforms[i]->y + height / 2 - model->player->position.y);
-			plat[1].position = sf::Vector2f(CENTER_SCREEN + plat[1].position.x - model->player->position.x, model->levelManager.platforms[i]->y + height / 2 - model->player->position.y);
-			plat[2].position = sf::Vector2f(CENTER_SCREEN + plat[2].position.x - model->player->position.x, model->levelManager.platforms[i]->y + 35 + height / 2 - model->player->position.y);
-			plat[3].position = sf::Vector2f(CENTER_SCREEN + plat[3].position.x - model->player->position.x, model->levelManager.platforms[i]->y + 35 + height / 2 - model->player->position.y);
+			plat[0].position = sf::Vector2f(CENTER_SCREEN + model->levelManager.platforms[i]->x - model->player->position.x, model->levelManager.platforms[i]->y + height / 2 - model->player->position.y);
+			plat[1].position = sf::Vector2f(model->levelManager.platforms[i]->width + CENTER_SCREEN + model->levelManager.platforms[i]->x - model->player->position.x, model->levelManager.platforms[i]->y + height / 2 - model->player->position.y);
+			plat[2].position = sf::Vector2f(model->levelManager.platforms[i]->width + CENTER_SCREEN + model->levelManager.platforms[i]->x - model->player->position.x, model->levelManager.platforms[i]->y + 35 + height / 2 - model->player->position.y);
+			plat[3].position = sf::Vector2f(CENTER_SCREEN + model->levelManager.platforms[i]->x - model->player->position.x, model->levelManager.platforms[i]->y + 35 + height / 2 - model->player->position.y);
 		}
 		else if (model->player->centered) { //when player is centered, the platforms should not scroll with him..
 			plat[0].position = sf::Vector2f(CENTER_SCREEN + plat[0].position.x - model->player->position.x, model->levelManager.platforms[i]->y);
