@@ -22,6 +22,7 @@ public:
 	sf::Vector2f velocity;
 	std::vector<Bullet*> bullets;
 
+	int groundLevel;
 	int speed; //the rate that velocity increments when the Enemy moves
 	sf::Time accumulatedTime; //enemy may change behaviour after some time passes
 };

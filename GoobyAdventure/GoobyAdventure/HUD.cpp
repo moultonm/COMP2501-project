@@ -17,7 +17,6 @@ HUD::HUD() {
 HUD::~HUD() {}
 
 void HUD::render(sf::RenderWindow* window) {
-	//window->draw(points);
 	window->draw(armour);
 }
 

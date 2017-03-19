@@ -17,11 +17,17 @@ LevelScreen::LevelScreen() : index(0) {
 	level1.setFillColor(sf::Color::Black);
 	level1.setPosition(sf::Vector2f(425, 150));
 
+	level2.setFont(font);
+	level2.setString("LEVEL TWO");
+	level2.setCharacterSize(20);
+	level2.setFillColor(sf::Color::Black);
+	level2.setPosition(sf::Vector2f(425, 275));
+
 	crafting.setFont(font);
 	crafting.setString("CRAFTING");
 	crafting.setCharacterSize(20);
 	crafting.setFillColor(sf::Color::Black);
-	crafting.setPosition(sf::Vector2f(425, 275));
+	crafting.setPosition(sf::Vector2f(425, 400));
 
 	rect1.setPosition(sf::Vector2f(400, 125));
 	rect1.setSize(sf::Vector2f(200, 100));
@@ -29,7 +35,13 @@ LevelScreen::LevelScreen() : index(0) {
 	rect1.setOutlineColor(sf::Color(100, 100, 100));
 	rect1.setFillColor(sf::Color::White);
 
-	rectC.setPosition(sf::Vector2f(400, 250));
+	rect2.setPosition(sf::Vector2f(400, 250));
+	rect2.setSize(sf::Vector2f(200, 100));
+	rect2.setOutlineThickness(5);
+	rect2.setOutlineColor(sf::Color(100, 100, 100));
+	rect2.setFillColor(sf::Color::White);
+
+	rectC.setPosition(sf::Vector2f(400, 375));
 	rectC.setSize(sf::Vector2f(200, 100));
 	rectC.setOutlineThickness(5);
 	rectC.setOutlineColor(sf::Color(100, 100, 100));
@@ -51,9 +63,10 @@ void LevelScreen::render(sf::RenderWindow* window) {
 
 	window->draw(selector);
 	window->draw(rect1);
+	window->draw(rect2);
 	window->draw(rectC);
 	window->draw(level1);
+	window->draw(level2);
 	window->draw(crafting);
 	window->draw(levelscreen);
-
 }

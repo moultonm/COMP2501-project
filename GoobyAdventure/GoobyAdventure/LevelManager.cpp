@@ -3,17 +3,9 @@
 LevelManager::LevelManager() {
 	spawner = sf::seconds(0);
 	currentLevel = 1; //we start the game on level 1
-	generateLevel(currentLevel);
 
 	exit.setSize(sf::Vector2f(75, 50));
 	exit.setFillColor(sf::Color::Blue);
-
-	/*
-	//random platform example
-	for (int i = 0; i < 20; i++) {
-		platforms.push_back(new Platform(240 * i, rand() % 116 + 532, rand() % 110 + 50);
-	}
-	*/
 }
 
 LevelManager::~LevelManager() {
@@ -30,7 +22,6 @@ void LevelManager::update(sf::Time deltaTime) {
 		else if (movingPlat->y >= 630) movingPlat->upwards = true;
 		if (movingPlat->upwards) {
 			movingPlat->y -= 125 * deltaTime.asSeconds();
-			//if (player->velocity.y <= 0) player->position.y -= 145 * deltaTime.asSeconds();
 		}
 		else {
 			movingPlat->y += 125 * deltaTime.asSeconds();
@@ -44,14 +35,25 @@ void LevelManager::update(sf::Time deltaTime) {
 		}
 		else { player->movePlat = false; }
 	}
-
-	/*-----spawn new enemies into the game-----*/
-	/*spawner += deltaTime;
-	if (spawner.asSeconds() > 4) { //every 4 seconds
-		enemies.push_back(new Enemy(rand() % (3 * CENTER_SCREEN), 515)); //spawn a new enemy randomly on the screen
-		spawner = sf::seconds(0);
-	}*/
-
+	else if (currentLevel == 2) { //SECOND LEVEL UPDATE CODE
+		//moving platform starts at (3900, 175, 200) and it moves up to (4400, 175, 200)
+		Platform* movingPlat = platforms.back();
+		float tempX = movingPlat->x;
+		if (movingPlat->x <= 3900) movingPlat->upwards = false;
+		else if (movingPlat->x >= 4400) movingPlat->upwards = true;
+		if (movingPlat->upwards) {
+			movingPlat->x -= 125 * deltaTime.asSeconds();
+		}
+		else {
+			movingPlat->x += 125 * deltaTime.asSeconds();
+		}
+		//if player is on the moving plat, make sure he doesn't fall through
+		if (player->position.x + 43 > tempX && player->position.x + 20 < tempX + movingPlat->width
+			&& player->position.y + 90 <= movingPlat->y) {
+			if (movingPlat->upwards) { player->position.x -= 125 * deltaTime.asSeconds(); }
+			else { player->position.x += 125 * deltaTime.asSeconds(); }
+		}
+	}
 }
 
 bool LevelManager::screenLimit(float x) {
@@ -60,12 +62,26 @@ bool LevelManager::screenLimit(float x) {
 			return true;
 		}
 	}
+
+	if (currentLevel == 2) {
+		if (x >= 4960) { //can't go past the right border of the world (x = 5000)
+			return true;
+		}
+	}
 	return false;
 }
 
 //stairs should always be pushed lowest to highest in order (sort by y coordinate)
-void LevelManager::generateLevel(int level) {
-	if (level == 1) {
+void LevelManager::generateLevel() {
+	platforms.clear();
+	loot.clear();
+	enemies.clear();
+
+	if (currentLevel == 1) {
+		player->groundLevel = 600;
+		player->position.x = 15;
+		player->position.y = player->groundLevel - 50;
+
 		platforms.push_back(new Platform(0, 665, 2000)); //first long stretch
 		platforms.push_back(new Platform(3000, 665, 1000)); //lower rightside long stretch
 		platforms.push_back(new Platform(2000, 630, 100)); //lower stairs
@@ -101,17 +117,61 @@ void LevelManager::generateLevel(int level) {
 		exit.setPosition(exitx, exity);
 
 		//ENEMIES
-		enemies.push_back(new Enemy(400, 585));
-		enemies.push_back(new Enemy(800, 585));
-		enemies.push_back(new Enemy(1200, 585));
-		enemies.push_back(new Enemy(1800, 585));
-		enemies.push_back(new Enemy(3000, 585));
-		enemies.push_back(new Enemy(3400, 585));
-		enemies.push_back(new Enemy(3800, 585));
+		enemies.push_back(new Enemy(400, 565));
+		enemies.push_back(new Enemy(800, 565));
+		enemies.push_back(new Enemy(1200, 565));
+		enemies.push_back(new Enemy(1800, 565));
+		enemies.push_back(new Enemy(3200, 565));
+		enemies.push_back(new Enemy(3500, 565));
+		enemies.push_back(new Enemy(3800, 565));
+		//mid plats
+		enemies.push_back(new Enemy(2400, 315));
+		enemies.push_back(new Enemy(2450, 80));
 		//upper
-		enemies.push_back(new Enemy(400, -420));
-		enemies.push_back(new Enemy(1200, -420));
-		enemies.push_back(new Enemy(1600, -420));
-		enemies.push_back(new Enemy(2000, -420));
+		enemies.push_back(new Enemy(400, -430));
+		enemies.push_back(new Enemy(1200, -430));
+		enemies.push_back(new Enemy(1600, -430));
+		enemies.push_back(new Enemy(2000, -430));
+	}
+	else if (currentLevel == 2) {
+		player->groundLevel = 600;
+		player->position.x = 15;
+		player->position.y = player->groundLevel - 50;
+
+		platforms.push_back(new Platform(0, 665, 1000)); //first long stretch
+		platforms.push_back(new Platform(1000, 630, 100)); //lower stairs
+		platforms.push_back(new Platform(1100, 595, 100));
+		platforms.push_back(new Platform(1200, 560, 100));
+		platforms.push_back(new Platform(1300, 525, 400)); //first landing
+		platforms.push_back(new Platform(1700, 490, 100));
+		platforms.push_back(new Platform(1800, 455, 100));
+		platforms.push_back(new Platform(1900, 420, 100));
+		platforms.push_back(new Platform(2000, 385, 600)); //second landing
+		platforms.push_back(new Platform(2600, 350, 100));
+		platforms.push_back(new Platform(2700, 315, 100));
+		platforms.push_back(new Platform(2800, 280, 100));
+		platforms.push_back(new Platform(2900, 245, 100));
+		platforms.push_back(new Platform(3000, 210, 100));
+		platforms.push_back(new Platform(3100, 175, 800)); //landing before moving plat
+		platforms.push_back(new Platform(4600, 175, 400)); //exit after moving plat
+
+		//moving platform starts at (3900, 175, 200) and it moves up to (4400, 175, 200)
+		platforms.push_back(new Platform(4000, 175, 200));
+
+		exitx = 4850;
+		exity = 125;
+		exit.setPosition(exitx, exity);
+
+		//ENEMIES
+		enemies.push_back(new Enemy(600, 565));
+		enemies.push_back(new Enemy(1400, 450));
+		enemies.push_back(new Enemy(2400, 300));
+		enemies.push_back(new Enemy(3200, 80));
+		enemies.push_back(new Enemy(4800, 80));
+
+		//LOOT
+		loot.push_back(new Loot(800, 605)); //loot 1
+		loot.push_back(new Loot(2100, 325)); //loot 2
+		loot.push_back(new Loot(4100, 115)); //loot 3
 	}
 }

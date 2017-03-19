@@ -11,7 +11,7 @@ public:
 	LevelManager();
 	~LevelManager();
 	void update(sf::Time);
-	void generateLevel(int); //spawns the current level being played
+	void generateLevel(); //spawns the current level being played
 	bool screenLimit(float);
 
 	int currentLevel;

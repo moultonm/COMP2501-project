@@ -4,7 +4,7 @@ Player::Player() {
 
 	groundLevel = 600;
 	position.x = 15;
-	position.y = groundLevel-50;
+	position.y = groundLevel - 50;
 	centered = false;
 	centeredY = false;
 	isJumping = false;
@@ -23,7 +23,6 @@ Player::Player() {
 	jumpSpeed = 400;
 	jumpHeight = 150;
 	jumpLocation = groundLevel;
-	//sprite.setOrigin(48, 44); //48 44
 }
 
 Player::~Player() {
@@ -51,10 +50,10 @@ void Player::update(sf::Time deltaTime) {
 	jump(deltaTime); //player jumps!
 
 	if (!centered && !centeredY) { //this gives us the effect where the player moves until he is centered, after which the camera moves instead of the player
-		sprite.setPosition((int)position.x%1024, (int)position.y%700);
+		sprite.setPosition((int)position.x % 1024, (int)position.y % 700);
 	}
 	else if (!centered && centeredY) {
-		sprite.setPosition((int)position.x%1024, 350);
+		sprite.setPosition((int)position.x % 1024, 350);
 	}
 	else if (centered && !centeredY) {
 		sprite.setPosition(CENTER_SCREEN, position.y);
@@ -281,6 +280,6 @@ void Player::fireBullet() {
 		velx = 0;
 		vely = Bullet::speed;
 	}
-	bullets.push_back(new Bullet(position.x + bulletOffset, position.y+20, velx, vely));
+	bullets.push_back(new Bullet(position.x + bulletOffset, position.y + 20, velx, vely));
 }
 

@@ -9,7 +9,6 @@ public:
 	~Control();
 
 	void inputs(); //takes user input and changes game world based on it
-
 	int* gameState; //keeps track of global gamestate in controller
 
 private:

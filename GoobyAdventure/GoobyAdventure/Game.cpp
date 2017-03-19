@@ -1,5 +1,16 @@
 #include "Game.h"
 
+/*
+Project: COMP2501A - Final Project - Gooby's Space Adventure
+Authors: Alexandra Wilson (100998162), Matthew Moulton (101010631)
+*/
+//Press ESC at any time to go back to the Level Select screen
+// Enter chooses selected menu item
+// W&S navigate menus
+// A&D move left and right
+// W jumps
+// space shoots
+
 Game::Game() {
 	model = new Model();
 	view = new View(model);

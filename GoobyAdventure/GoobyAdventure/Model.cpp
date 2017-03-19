@@ -26,12 +26,27 @@ void Model::update(sf::Time deltaTime) {
 	for (int i = 0; i < levelManager.platforms.size(); i++) {
 		//stop moving right if there is a plat in the way
 		if (player->velocity.x > 0 && player->position.x + 43 >= levelManager.platforms[i]->x && player->position.x + 38 < levelManager.platforms[i]->x
-			&& levelManager.platforms[i]->y > player->position.y+10	&& levelManager.platforms[i]->y < player->position.y + 90) {
+			&& levelManager.platforms[i]->y > player->position.y + 10 && levelManager.platforms[i]->y < player->position.y + 90) {
 			player->velocity.x = 0;
 		}//stop moving left if there is a plat in the way
 		if (player->velocity.x < 0 && player->position.x + 25 >= levelManager.platforms[i]->x + levelManager.platforms[i]->width && player->position.x + 20 < levelManager.platforms[i]->x + levelManager.platforms[i]->width
 			&& levelManager.platforms[i]->y > player->position.y + 10 && levelManager.platforms[i]->y < player->position.y + 90) {
 			player->velocity.x = 0;
+		}
+	}
+
+	/*-----check if platform is blocking enemies-----*/
+	for (int i = 0; i < levelManager.platforms.size(); i++) {
+		for (int j = 0; j < levelManager.enemies.size(); j++) {
+			//stop moving right if there is a plat in the way
+			if (levelManager.enemies[j]->velocity.x > 0 && levelManager.enemies[j]->position.x + 73 >= levelManager.platforms[i]->x && levelManager.enemies[j]->position.x + 10 < levelManager.platforms[i]->x
+				&& levelManager.platforms[i]->y > levelManager.enemies[j]->position.y + 10 && levelManager.platforms[i]->y < levelManager.enemies[j]->position.y + 90) {
+				levelManager.enemies[j]->velocity.x *= -1;
+			}//stop moving left if there is a plat in the way
+			if (levelManager.enemies[j]->velocity.x < 0 && levelManager.enemies[j]->position.x + 20 >= levelManager.platforms[i]->x + levelManager.platforms[i]->width && levelManager.enemies[j]->position.x + 15 < levelManager.platforms[i]->x + levelManager.platforms[i]->width
+				&& levelManager.platforms[i]->y > levelManager.enemies[j]->position.y + 10 && levelManager.platforms[i]->y < levelManager.enemies[j]->position.y + 90) {
+				levelManager.enemies[j]->velocity.x *= -1;
+			}
 		}
 	}
 
@@ -58,6 +73,16 @@ void Model::update(sf::Time deltaTime) {
 		}
 		else if (!gotOne) {//!(player->position.x + 40 > levelManager.platforms[i]->x && player->position.x + 25 < levelManager.platforms[i]->x + levelManager.platforms[i]->width)) { //reset groundlevel if we aren't on a platform
 			player->groundLevel = 600; //this value is the "floor" level, can be updated for each level once levels are designed
+		}
+	}
+
+	/*-----check if enemy is on a platform-----*/
+	for (int i = 0; i < levelManager.platforms.size(); i++) {
+		for (int j = 0; j < levelManager.enemies.size(); j++) {
+			if (levelManager.enemies[j]->position.x + 73 > levelManager.platforms[i]->x && levelManager.enemies[j]->position.x + 10 < levelManager.platforms[i]->x + levelManager.platforms[i]->width
+				&& levelManager.enemies[j]->position.y + 80 <= levelManager.platforms[i]->y) {
+				levelManager.enemies[j]->groundLevel = levelManager.platforms[i]->y - 80;
+			}
 		}
 	}
 
@@ -140,6 +165,9 @@ void Model::update(sf::Time deltaTime) {
 			break;
 		}
 	}
-} //bullet center 32,32 radius 32
-//enemy center 52,54 .. 26 radius
-//player center ?,?   radius ?
+
+	//CHECK IF WE REACHED THE EXIT
+	if (player->position.x + 40 > levelManager.exitx && player->position.x + 20 < levelManager.exitx + 75 && player->position.y < -250 && player->position.y > -485) {
+		*gameState = LEVEL;
+	}
+}

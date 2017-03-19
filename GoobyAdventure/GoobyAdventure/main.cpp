@@ -12,3 +12,10 @@ int main() {
 
 	return 0;
 }
+
+//Press ESC at any time to go back to the Level Select screen
+// Enter chooses selected menu item
+// W&S navigate menus
+// A&D move left and right
+// W jumps
+// space shoots

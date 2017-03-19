@@ -13,10 +13,10 @@ Item::Item(int tier, std::string name, int amount) {
 	image.createMaskFromColor(sf::Color::Magenta);
 	texture.loadFromImage(image);
 	sprite.setTexture(texture);
-	sprite.setScale({ 0.5+ 50 / 40, 0.5 + 50 / 40 });
+	sprite.setScale({ 0.5 + 50 / 40, 0.5 + 50 / 40 });
 	if (name == "bullet") {
 		this->def = "a plain bullet"; // needed for fire gun // T1
-		sprite.setScale({50/14, 50/14});
+		sprite.setScale({ 50 / 14, 50 / 14 });
 	}
 	else if (name == "fire gun") { // makes the bullets shoot fire instead! // T2
 		this->def = "you can shoot FIYAHHH";

@@ -6,7 +6,7 @@
 #include <sstream>
 #include <string>
 
-class HUD : public Renderable{
+class HUD : public Renderable {
 public:
 	HUD();
 	~HUD();

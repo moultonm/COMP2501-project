@@ -28,7 +28,4 @@ public:
 	sf::Text craftDesc;
 	std::vector<sf::Text> itemToSel;
 	sf::RectangleShape left, craftingLarge, smallLeft, smallRight, smallCraft, craftNameBox, craftDescBox, itemDescBox, itemSelector, boxSelector;
-private:
-
-
 };

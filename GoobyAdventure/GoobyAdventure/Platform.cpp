@@ -6,8 +6,6 @@ Platform::Platform(int x, int y, int w) {
 	width = w;
 	height = 35;
 	upwards = true;
-	//texture->loadFromFile("Assets/grassHalf.png");
-	//texture->setRepeated(true);
 	plat.setPrimitiveType(sf::Quads);
 	plat.resize(4);
 	plat[0].position = sf::Vector2f(x, y);

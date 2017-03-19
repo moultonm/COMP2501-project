@@ -180,7 +180,7 @@ void Crafting::craft(std::vector<Item*>& items, Player* p) {
 	// armour
 		// red goo = fashionable space suit
 		// green goo = bones of your enemies
-	
+
 
 	if (select1->getName() == "bullet") {
 		if (select2->getName() == "red goo") { // a fire gun gives you +5 fire bullets
@@ -203,18 +203,18 @@ void Crafting::craft(std::vector<Item*>& items, Player* p) {
 	}
 	else if (select1->getName() == "red goo") {
 		if (select2->getName() == "bullet") {
-			toMake = new Item(2, "fire gun"); 
+			toMake = new Item(2, "fire gun");
 			for (int i = 0; i < 5; i++) {
 				//p->bullets.push_back(new FireBullet());
 			}
 		}
 		else if (select2->getName() == "boots") {
 			toMake = new Item(2, "boots of leaping"); // increases jump height by 1
-			p->jumpHeight+=40;
-		} 
+			p->jumpHeight += 40;
+		}
 		else if (select2->getName() == "armour") {
 			toMake = new Item(2, "fashionable space suit"); // increases speed by 1
-			p->speed+=30;
+			p->speed += 30;
 		}
 		else {
 			select1 = 0;
@@ -225,11 +225,11 @@ void Crafting::craft(std::vector<Item*>& items, Player* p) {
 	else if (select1->getName() == "boots") {
 		if (select2->getName() == "red goo") {
 			toMake = new Item(2, "boots of leaping");
-			p->jumpHeight+=40;
+			p->jumpHeight += 40;
 		}
 		else if (select2->getName() == "green goo") {
 			toMake = new Item(2, "heavy boots"); // decreases jump height by 1, increases armour by 1
-			p->jumpHeight-=40;
+			p->jumpHeight -= 40;
 			p->armour++;
 		}
 		else {
@@ -245,7 +245,7 @@ void Crafting::craft(std::vector<Item*>& items, Player* p) {
 		}
 		else if (select2->getName() == "boots") {
 			toMake = new Item(2, "heavy boots");
-			p->jumpHeight-=40;
+			p->jumpHeight -= 40;
 			p->armour++;
 		}
 		else if (select2->getName() == "bullet") {
@@ -267,14 +267,14 @@ void Crafting::craft(std::vector<Item*>& items, Player* p) {
 		}
 		else if (select2->getName() == "red goo") {
 			toMake = new Item(2, "fashionable space suit");
-			p->speed+=30;
+			p->speed += 30;
 		}
 		else {
 			select1 = 0;
 			select2 = 0;
 			return;
 		}
-	} 
+	}
 	else {
 		select1 = 0;
 		select2 = 0;
@@ -300,14 +300,14 @@ void Crafting::craft(std::vector<Item*>& items, Player* p) {
 			}
 		}
 		if (items[i]->amount <= 0) {
-			for (int j = i; j < items.size()-1; j++) {
+			for (int j = i; j < items.size() - 1; j++) {
 				items[j] = items[j + 1];
 			}
 			items.pop_back();
 		}
 	}
-	
-	if(!added) { items.push_back(toMake); }
+
+	if (!added) { items.push_back(toMake); }
 	select1 = 0;
 	select2 = 0;
 	itemDesc.setString("");

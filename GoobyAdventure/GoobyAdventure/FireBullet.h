@@ -5,9 +5,6 @@
 
 class FireBullet : public Bullet {
 public:
-	FireBullet(float x=0, float y=0, float velx=0, float vely=0);
+	FireBullet(float x = 0, float y = 0, float velx = 0, float vely = 0);
 	~FireBullet();
-
-private:
-
 };

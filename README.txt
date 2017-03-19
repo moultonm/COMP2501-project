@@ -5,12 +5,12 @@ Alexandra Wilson (100998162)
 Matthew Moulton (101010631)
 
 Still TO-DO for this version:
-- add a second level
-- exit has to bring you back to the level screen
-- enemies currently do nothing unless you are near them
+- fix Level Two's moving platform (it doesnt work)
+- enemies behaviour can be improved
 - right side of the world doesn't uncenter the camera
 
 CONTROLS:
+- Press ESC at any time to go back to Level Select menu
 - From Title Screen: Space to start game
 - From Level Select: W/S to change selection, 'Enter' to choose selection
 - From Crafting Screen: W/S to change selection, 'Enter' to choose selection

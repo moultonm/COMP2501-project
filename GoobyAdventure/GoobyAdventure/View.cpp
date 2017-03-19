@@ -109,7 +109,7 @@ void View::render() {
 		model->levelManager.exit.setPosition(CENTER_SCREEN + model->levelManager.exitx - model->player->position.x, model->levelManager.exit.getPosition().y);
 	}
 	if (model->player->centeredY) {
-		model->levelManager.exit.setPosition(model->levelManager.exit.getPosition().x, model->levelManager.exity + height/2 - model->player->position.y);
+		model->levelManager.exit.setPosition(model->levelManager.exit.getPosition().x, model->levelManager.exity + height / 2 - model->player->position.y);
 	}
 	window.draw(model->levelManager.exit);
 
