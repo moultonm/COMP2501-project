@@ -9,15 +9,16 @@ HUD::HUD() {
 	armour.setPosition(10, 10);
 	font.loadFromFile("Assets/Escalope_Crust-One.ttf");
 	points.setFont(font);
-	points.setCharacterSize(30);
-	points.setFillColor(sf::Color::White);
-	points.setPosition(CENTER_SCREEN - 30, 10);
-	points.setString("0");
+	points.setCharacterSize(24);
+	points.setFillColor(sf::Color::Magenta);
+	points.setPosition(50, 10);
+	points.setString("2");
 }
 HUD::~HUD() {}
 
 void HUD::render(sf::RenderWindow* window) {
 	window->draw(armour);
+	window->draw(points);
 }
 
 void HUD::update(int points) {

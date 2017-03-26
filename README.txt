@@ -4,10 +4,15 @@ Authors:
 Alexandra Wilson (100998162)
 Matthew Moulton (101010631)
 
-Still TO-DO for this version:
-- fix Level Two's moving platform (it doesnt work)
-- enemies behaviour can be improved
-- right side of the world doesn't uncenter the camera
+FIXED in this version:
+- fixed level two's moving platform
+- fixed background drawing properly between levels
+- game ends when the last exit is touched
+- added little story text part
+- dies now when you fall in pit
+- take damage when bullets hit you (and end game when dead)
+- fixed styling of topleft statistics (and display armour value)
+- changed coin to a different graphic
 
 CONTROLS:
 - Press ESC at any time to go back to Level Select menu

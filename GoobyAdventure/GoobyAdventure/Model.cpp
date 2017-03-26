@@ -154,20 +154,25 @@ void Model::update(sf::Time deltaTime) {
 		}
 	}
 
-	//CHECK COLLISION WITH PLAYERxENEMIES
+	//CHECK COLLISION WITH PLAYERxENEMIES BULLETS
 	for (int j = 0; j < levelManager.enemies.size(); j++) {
-		//player->sprite.setColor(sf::Color::Green);
-		if (pow((player->position.x + 40) - (levelManager.enemies[j]->position.x + 52), 2) +
-			pow((player->position.y + 61) - (levelManager.enemies[j]->position.y + 54), 2) <=
-			pow(25 + 26, 2)) {
-			//*gameState = 2; //game over
-			//player->sprite.setColor(sf::Color::Red); //for now show collision by updating color
-			break;
+		for (int i = 0; i < levelManager.enemies[j]->bullets.size(); i++) {
+			if (pow((player->position.x + 40) - (levelManager.enemies[j]->bullets[i]->position.x + 32), 2) +
+				pow((player->position.y + 61) - (levelManager.enemies[j]->bullets[i]->position.y + 32), 2) <=
+				pow(25 + 32, 2)) {
+				if (player->armour > 0) player->armour--;
+				else *gameState = GAMEOVER; //game over
+				levelManager.enemies[j]->bullets.erase(levelManager.enemies[j]->bullets.begin() + i);
+				break;
+			}
 		}
 	}
 
 	//CHECK IF WE REACHED THE EXIT
-	if (player->position.x + 40 > levelManager.exitx && player->position.x + 20 < levelManager.exitx + 75 && player->position.y < -250 && player->position.y > -485) {
-		*gameState = LEVEL;
+	if (player->position.x + 40 > levelManager.exitx && player->position.x + 20 < levelManager.exitx + 75 && player->position.y < levelManager.exity + 140 && player->position.y > levelManager.exity - 95) {
+		if (levelManager.currentLevel == 1) *gameState = LEVEL;
+		else if (levelManager.currentLevel == 2) *gameState = VICTORY;
 	}
+
+	if (player->position.y >= 600) *gameState = GAMEOVER;
 }

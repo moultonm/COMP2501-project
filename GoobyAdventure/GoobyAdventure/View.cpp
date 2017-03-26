@@ -55,6 +55,27 @@ void View::render() {
 		model->levelScreen->render(&window);
 		window.display();
 	}
+	else if (*gameState == VICTORY) {
+		text.setCharacterSize(42);
+		text.setPosition(width / 2 - 350, height / 2 - 100);
+		text.setString("Gooby and his pet blue cubes are reunited! Congratulations!\n\n(Press esc if you want to continue playing)");
+		window.draw(text);
+		window.display();
+	}
+	else if (*gameState == GAMEOVER) {
+		text.setCharacterSize(42);
+		text.setPosition(width / 2 - 350, height / 2 - 100);
+		text.setString("Gooby was injured and unable to save his friends!\n\n(Press esc if you want to continue playing)");
+		window.draw(text);
+		window.display();
+	}
+	else if (*gameState == STORY) {
+		text.setCharacterSize(36);
+		text.setPosition(width / 2 - 400, height / 2 - 100);
+		text.setString("Space Adventurer Gooby has lost his two pet cubes when his ship crashed\n\nHelp him traverse this alien world to find them!\n\n(Space to continue)");
+		window.draw(text);
+		window.display();
+	}
 	if (*gameState != GAME) {
 		return; //don't draw anything else if we haven't started the game yet
 	}
@@ -175,6 +196,9 @@ void View::render() {
 	ss << "Score: " << model->score << std::endl;
 	ss << "Coins: " << model->player->coins;
 	text.setString(ss.str());
+	ss.str("");
+	ss << model->player->armour;
+	hud->points.setString(ss.str());
 	hud->render(&window);
 	window.draw(text);
 	window.display();

@@ -21,6 +21,11 @@ void Control::inputs() {
 		case sf::Event::KeyPressed:
 			if (*gameState == TITLE) {
 				if (event.key.code == sf::Keyboard::Space) {
+					*gameState = STORY; //start game if we press space on the title screen
+				}
+			}
+			else if (*gameState == STORY) {
+				if (event.key.code == sf::Keyboard::Space) {
 					*gameState = LEVEL; //start game if we press space on the title screen
 				}
 			}
@@ -34,15 +39,25 @@ void Control::inputs() {
 						*gameState = GAME;
 						model->levelManager.currentLevel = 1;
 						model->levelManager.generateLevel();
-						view->text.setCharacterSize(16);
-						view->text.setPosition(25, 25);
+						model->player->armour = 2;
+						view->backgroundSprites[0].setPosition(0 - CENTER_SCREEN, 0);
+						view->backgroundSprites[1].setPosition(view->width - CENTER_SCREEN, 0);
+						view->backgroundSprites[2].setPosition(0 - CENTER_SCREEN, -view->height);
+						view->backgroundSprites[3].setPosition(view->width - CENTER_SCREEN, -view->height);
+						view->text.setCharacterSize(20);
+						view->text.setPosition(25, 50);
 					}
 					else if (model->levelScreen->index == 1) {
 						*gameState = GAME;
 						model->levelManager.currentLevel = 2;
 						model->levelManager.generateLevel();
-						view->text.setCharacterSize(16);
-						view->text.setPosition(25, 25);
+						model->player->armour = 2;
+						view->backgroundSprites[0].setPosition(0 - CENTER_SCREEN, 0);
+						view->backgroundSprites[1].setPosition(view->width - CENTER_SCREEN, 0);
+						view->backgroundSprites[2].setPosition(0 - CENTER_SCREEN, -view->height);
+						view->backgroundSprites[3].setPosition(view->width - CENTER_SCREEN, -view->height);
+						view->text.setCharacterSize(20);
+						view->text.setPosition(25, 50);
 					}
 					else {
 						*gameState = CRAFT;

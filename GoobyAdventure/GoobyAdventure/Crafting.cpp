@@ -144,7 +144,6 @@ void Crafting::render(sf::RenderWindow* window) {
 void Crafting::menu(std::vector<Item*>& items) {
 	itemToSel.clear();
 	itemToSel.reserve(items.size());
-	std::cout << items.size() << std::endl;
 	for (int i = 0; i < items.size(); i++) {
 		if (items[i]->getTier() == 1) {
 			itemToSel.push_back(sf::Text(items[i]->getName(), font, 15));

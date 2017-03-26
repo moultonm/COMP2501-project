@@ -13,7 +13,6 @@ public:
 	void render(sf::RenderWindow*);
 	void update(int); // takes in points
 
-private:
 	sf::Sprite armour;
 	sf::Image armourIm;
 	sf::Texture armourTex;
